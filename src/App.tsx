@@ -1,30 +1,43 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+const getAverage = (numbers: number[]) => {
+    console.log("평균 값을 계산 중입니다.");
 
-function Timer(){
-  const [count,setCount] = useState<number>(0);
-  
-  useEffect(()=>{
-    const id =setInterval(()=>{
-      console.log("Interval 실행됨");
-      setCount((c)=>c+1);
-    },1000);
+    if (numbers.length === 0) return 0;
 
-    return()=>{
-      console.log(" cleanup: 이전 타이머 제거됨");
-      clearInterval(id);
-    }
-  },[]);
-  return <div>카운트 : {count}</div>
+    const sum = numbers.reduce((acc, cur) => acc + cur);
+    return sum / numbers.length;
+};
+
+function App(){
+    const [list, setList] = useState<number[]>([]);
+    const [number, setNumber] = useState<string>("");
+
+    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setNumber(event.target.value);
+    };
+    const onInsert = (event: React.MouseEvent<HTMLButtonElement>) => {
+        const nextList = list.concat(parseInt(number));
+        setList(nextList); // number[]
+        setNumber(""); // number 상태 값 초기화
+    };
+
+    return (
+        <div>
+            <input type="text" value={number} onChange={onChange} />
+            <button onClick={onInsert}>등록</button>
+
+            <ul>
+                {list.map((value: number, index: number) => {
+                    return <li key={index}>{value}</li>;
+                })}
+            </ul>
+
+            <div>
+                <b>평균 값: {getAverage(list)}</b>
+            </div>
+        </div>
+    );
+
 }
 
-export default function App(){
- const [visible,setVisible] = useState<boolean>(true);
-
- return (
-  <div>
-    {visible&&<Timer/>}
-    <button onClick={()=>setVisible(!visible)}>{visible?"숨기기" :"보이기"}</button>
-  </div>
- )
-
-}
+export default App
