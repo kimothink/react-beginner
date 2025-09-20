@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
+
 const getAverage = (numbers: number[]) => {
     console.log("평균 값을 계산 중입니다.");
 
@@ -15,13 +16,15 @@ function App(){
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setNumber(event.target.value);
     };
-    const onInsert = (event: React.MouseEvent<HTMLButtonElement>) => {
+
+    const onInsert = () => {
         const nextList = list.concat(parseInt(number));
         setList(nextList); // number[]
         setNumber(""); // number 상태 값 초기화
     };
 
-    return (
+    const avg = useMemo(() => getAverage(list), [list]);
+      return (
         <div>
             <input type="text" value={number} onChange={onChange} />
             <button onClick={onInsert}>등록</button>
@@ -33,11 +36,10 @@ function App(){
             </ul>
 
             <div>
-                <b>평균 값: {getAverage(list)}</b>
+                <b>평균 값: {avg}</b>
             </div>
         </div>
     );
-
 }
 
 export default App
