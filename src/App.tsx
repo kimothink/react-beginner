@@ -1,45 +1,22 @@
-import { useCallback, useMemo, useState } from "react";
+import { useRef } from "react";
 
-const getAverage = (numbers: number[]) => {
-    console.log("평균 값을 계산 중입니다.");
+function App() {
+    const inputElement = useRef<HTMLInputElement | null>(null);
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-    if (numbers.length === 0) return 0;
+    const handleClick = () => {
+        // useRef 동작
+        inputElement.current?.focus();
+        fileInputRef.current?.click();
+    };
 
-    const sum = numbers.reduce((acc, cur) => acc + cur);
-    return sum / numbers.length;
-};
-
-function App(){
-    const [list, setList] = useState<number[]>([]);
-    const [number, setNumber] = useState<string>("");
-
- const onChange = useCallback((event: React.  ChangeEvent<HTMLInputElement>) => {
-        setNumber(event.target.value);
-    }, []); // 컴포넌트가 처음 렌더링 될 때만 함수를 생성한다.
-
-    const onInsert = useCallback(() => {
-        const newList = list.concat(parseInt(number));
-        setList(newList); // number[]
-        setNumber(""); // number 상태 값 초기화
-    }, [number, list]);
-
-    const avg = useMemo(() => getAverage(list), [list]);
-      return (
+    return (
         <div>
-            <input type="text" value={number} onChange={onChange} />
-            <button onClick={onInsert}>등록</button>
-
-            <ul>
-                {list.map((value: number, index: number) => {
-                    return <li key={index}>{value}</li>;
-                })}
-            </ul>
-
-            <div>
-                <b>평균 값: {avg}</b>
-            </div>
+            <input type="text" ref={inputElement} />
+            <input type="file" ref={fileInputRef} />
+            <button onClick={handleClick}>등록</button>
         </div>
     );
 }
 
-export default App
+export default App;
