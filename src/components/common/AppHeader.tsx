@@ -1,4 +1,5 @@
 import { Separator } from "@radix-ui/react-separator"
+import { NavLink } from "react-router";
 
 function AppHeader(){
   return (
@@ -9,10 +10,12 @@ function AppHeader(){
                  <div className="flex items-center gap-5">
                   <div className="font-semibold">토픽 인사이트</div>
                   <Separator orientation="vertical" className="!h-4"/>
-                  <div className="font-semibold">토픽 인사이트</div>        
+                  <div className="font-semibold">포트폴리오</div>        
                  </div>
               </div>
-                    <div className="font-semibold text-muted-forground hover:text-white transition-all duration-500">로그인</div>
+                  
+                    <NavLink to={"sign-in"}>로그인</NavLink>
+
               </div> 
   
       </header>

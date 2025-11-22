@@ -9,6 +9,7 @@ import SignUp from './pages/sign-up/index.tsx';
 import CreateTopic from './pages/topics/create.tsx';
 import RootLayout from './layout.tsx';
 import { ThemeProvider } from './components/theme-provider.tsx';
+import { Toaster } from 'sonner';
 createRoot(document.getElementById('root')!).render(
  <StrictMode>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
@@ -23,6 +24,7 @@ createRoot(document.getElementById('root')!).render(
     </Route>
   </Routes>
   </BrowserRouter>
+  <Toaster richColors position='top-center'/>
   </ThemeProvider>
  </StrictMode>
 )

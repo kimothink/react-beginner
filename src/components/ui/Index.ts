@@ -4,3 +4,5 @@ export {Separator} from "./separator"
 export {Label} from  "./label"
 export {Input} from "./input"
 export {Select} from "./select"
+export { useFormField, Form, FormItem, FormLabel, FormControl, FormDescription, FormMessage, FormField } from "./form";
+export {Checkbox} from "./checkbox"
