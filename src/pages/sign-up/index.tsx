@@ -67,7 +67,8 @@ export default function SignUp(){
     email: values.email,
     password: values.password,
     });
-    
+
+    console.log(data);
     if(error){
 
     }
