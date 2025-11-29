@@ -1,10 +1,13 @@
 
+import { NavLink, useNavigate } from "react-router";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { email, z } from "zod";
 
 import { Button, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Input } from "@/components/ui";
-import { NavLink } from "react-router";
+import supabase from "@/lib/supabase";
+import { toast } from "sonner";
+import { useAuthStore } from "@/stores";
 
 const formSchema = z.object({
     email: z.email({
@@ -16,6 +19,7 @@ const formSchema = z.object({
 });
 
 export default function SignIn(){
+    const navigate = useNavigate();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -24,7 +28,35 @@ export default function SignIn(){
         },
     });
 
-    const onSubmit =() =>{console.log("로그인 버튼 클릭")};
+    const setId = useAuthStore((state)=>state.setId);
+    const setEmail = useAuthStore((state)=>state.setEmail);
+    const setRole = useAuthStore((state)=>state.setRole);
+    
+
+    const onSubmit =async (values:z.infer<typeof formSchema>) =>{
+        console.log("로그인 버튼 클릭")
+        try {
+            const {data:{user,session},error} = await supabase.auth.signInWithPassword({
+                email:values.email, password:values.password,
+            });
+            if(error){
+                toast.error(error.message);
+                return
+            }
+            if(user && session){
+                setId(user.id);
+                setEmail(user.email as string);
+                setRole(user.role as string);
+                
+                toast.success("로그인 성공하였습니다.");
+                navigate("/");
+            }
+
+        }catch(error){
+            console.log(error)
+        }
+
+    };
 
   return (
     <main className="w-full h-full min-h[720px] flex items-center justify-center p-6 gap-6">
